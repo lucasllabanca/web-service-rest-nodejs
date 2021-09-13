@@ -1,0 +1,32 @@
+USE [master]
+GO
+
+CREATE LOGIN [admin] WITH PASSWORD=N'admin', DEFAULT_DATABASE=[master], DEFAULT_LANGUAGE=[us_english], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+GO
+
+ALTER LOGIN [admin] DISABLE
+GO
+
+ALTER SERVER ROLE [sysadmin] ADD MEMBER [admin]
+GO
+
+ALTER SERVER ROLE [securityadmin] ADD MEMBER [admin]
+GO
+
+ALTER SERVER ROLE [serveradmin] ADD MEMBER [admin]
+GO
+
+ALTER SERVER ROLE [setupadmin] ADD MEMBER [admin]
+GO
+
+ALTER SERVER ROLE [processadmin] ADD MEMBER [admin]
+GO
+
+ALTER SERVER ROLE [diskadmin] ADD MEMBER [admin]
+GO
+
+ALTER SERVER ROLE [dbcreator] ADD MEMBER [admin]
+GO
+
+ALTER SERVER ROLE [bulkadmin] ADD MEMBER [admin]
+GO
