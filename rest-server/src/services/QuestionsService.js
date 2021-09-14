@@ -32,14 +32,37 @@ class QuestionsService {
     });
   }
 
+  // static update(questionId, updatedQuestion) {
+  //   return new Promise((resolve) => {
+  //     Question.findByPk(questionId)
+  //       .then(question => {
+  //         question.status = updatedQuestion.status || question.status;
+  //         question.description = updatedQuestion.description || question.description;
+  //         resolve(question.save());
+  //       }).catch(resolve(null));
+  //   });
+  // }
+
   static update(questionId, updatedQuestion) {
     return new Promise((resolve) => {
-      Question.findByPk(questionId)
+                 
+      if (updatedQuestion.id && updatedQuestion.id != questionId){
+        updatedQuestion.message = "Request path id is different from request body id";
+        resolve(updatedQuestion);
+      } else {
+        Question.findByPk(questionId)
         .then(question => {
-          question.status = updatedQuestion.status || question.status;
-          question.description = updatedQuestion.description || question.description;
-          resolve(question.save());
-        }).catch(resolve(null));
+          if (!question) {
+            resolve(null);
+          } else {
+            question.status = updatedQuestion.status || question.status;
+            question.description = updatedQuestion.description || question.description;
+            resolve(question.save());
+          }                   
+        }).catch((err) => {
+          resolve(err)
+        });
+      }
     });
   }
 

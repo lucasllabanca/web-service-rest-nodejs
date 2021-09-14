@@ -27,14 +27,26 @@ class AnswersService {
 
   static update(answerId, updatedAnswer) {
     return new Promise((resolve) => {
-      Answer.findByPk(answerId)
+                 
+      if (updatedAnswer.id && updatedAnswer.id != answerId){
+        updatedAnswer.message = "Request path id is different from request body id";
+        resolve(updatedAnswer);
+      } else {
+        Answer.findByPk(answerId)      
         .then(answer => {
-          answer.key = updatedAnswer.key || answer.key;
-          answer.name = updatedAnswer.name || answer.name;
-          answer.answer = updatedAnswer.answer || answer.answer;
-          answer.questionId = updatedAnswer.questionId || answer.questionId;
-          resolve(answer.save());
-        }).catch(resolve(null));
+          if (!answer) {
+            resolve(null);
+          } else {
+            answer.key = updatedAnswer.key || answer.key;
+            answer.name = updatedAnswer.name || answer.name;
+            answer.answer = updatedAnswer.answer || answer.answer;
+            answer.questionId = updatedAnswer.questionId || answer.questionId;
+            resolve(answer.save());
+          }                   
+        }).catch((err) => {
+          resolve(err)
+        });
+      }
     });
   }
 

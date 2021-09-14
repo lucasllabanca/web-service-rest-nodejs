@@ -4,6 +4,7 @@ const router = express.Router();
 const AnswersService = require('../services/AnswersService');
 const checkAuth = require('../middleware/check-auth');
 const notFound = require('../middleware/not-found');
+const badRequest = require('../middleware/bad-request');
 
 router.post('/', checkAuth, async (request, response) => {
   const answer = await AnswersService.add(request.body);
@@ -31,9 +32,13 @@ router.patch('/:answerId', async (request, response) => {
     request.params.answerId,
     request.body
   );
-  updatedAnswer
-    ? response.json(updatedAnswer)
-    : notFound(request, response);
+  if (!updatedAnswer) {
+    notFound(request, response)
+  } else {    
+    updatedAnswer.message
+    ? badRequest(request, response, updatedAnswer.message)
+    : response.json(updatedAnswer);
+  } 
 });
 
 router.delete('/:answerId', async (request, response) => {
