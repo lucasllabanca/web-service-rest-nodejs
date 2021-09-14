@@ -4,7 +4,6 @@ class QuestionsService {
 
   static add(newQuestion) {
     return new Promise((resolve) => {
-      let currentDate = new Date();
       newQuestion.status = newQuestion.status || 'New';
       resolve(Question.create({
         status: newQuestion.status,
@@ -12,7 +11,7 @@ class QuestionsService {
       }).then(question => {
         if (newQuestion.options) {
           newQuestion.options.forEach(option => {
-            question.createOption({ //Métodos Mágicos
+            question.createOption({
               option: option
             });
           });
