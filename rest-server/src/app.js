@@ -16,8 +16,10 @@ app.use(express.json());
 // Routes
 const questionsRouter = require('./routes/questions');
 const answersRouter = require('./routes/answers');
+const usersRouter = require('./routes/users');
 app.use('/api/questions', questionsRouter);
 app.use('/api/answers', answersRouter);
+app.use('/api/users', usersRouter);
 
 // Middlewares
 app.use(notFound);

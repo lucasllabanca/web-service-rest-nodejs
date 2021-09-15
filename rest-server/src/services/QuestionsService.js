@@ -1,11 +1,15 @@
+const Answer = require('../models/answer');
 const Question = require('../models/question');
+const Option = require('../models/option');
 
 class QuestionsService {
 
   static add(newQuestion) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
+
       newQuestion.status = newQuestion.status || 'New';
-      resolve(Question.create({
+
+      Question.create({
         status: newQuestion.status,
         description: newQuestion.description
       }).then(question => {
@@ -16,39 +20,30 @@ class QuestionsService {
             });
           });
         }
-      }));
+        resolve(question);
+      }).catch((err) => {
+        reject(err)
+      });
     });
   }
 
   static getAll() {
     return new Promise((resolve) => {
-      resolve(Question.findAll());
+      resolve(Question.findAll({include: [{model: Answer}, {model: Option}]}));
     });
   }
 
   static getById(id) {
     return new Promise((resolve) => {
-      resolve(Question.findByPk(id));
+      resolve(Question.findByPk(id, {include: [{model: Answer}, {model: Option}]}));
     });
   }
 
-  // static update(questionId, updatedQuestion) {
-  //   return new Promise((resolve) => {
-  //     Question.findByPk(questionId)
-  //       .then(question => {
-  //         question.status = updatedQuestion.status || question.status;
-  //         question.description = updatedQuestion.description || question.description;
-  //         resolve(question.save());
-  //       }).catch(resolve(null));
-  //   });
-  // }
-
   static update(questionId, updatedQuestion) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
                  
-      if (updatedQuestion.id && updatedQuestion.id != questionId){
-        updatedQuestion.message = "Request path id is different from request body id";
-        resolve(updatedQuestion);
+      if (updatedQuestion.id && updatedQuestion.id != questionId) {
+        reject("Request path id is different from request body id");
       } else {
         Question.findByPk(questionId)
         .then(question => {
@@ -60,7 +55,7 @@ class QuestionsService {
             resolve(question.save());
           }                   
         }).catch((err) => {
-          resolve(err)
+          reject(err)
         });
       }
     });

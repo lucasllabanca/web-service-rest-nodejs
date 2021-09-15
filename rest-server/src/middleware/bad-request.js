@@ -2,7 +2,7 @@ const badRequest = (request, response, msg, next) => {
     const HttpStatusBadRequest = 400;
     const errorInfo = {
       status: HttpStatusBadRequest,
-      message: `Route to ${request.method}${request.path}: ${msg}`
+      message: `Route to ${request.method} ${request.path}: ${msg}`
     };
   
     response
