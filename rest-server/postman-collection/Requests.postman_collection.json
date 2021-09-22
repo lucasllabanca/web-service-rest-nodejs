@@ -24,21 +24,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "notW34kP@ss",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "dm124",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -50,7 +35,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"description\": \"Question 5\",\n    \"status\": \"New\",\n    \"options\" : [\"Option-1\", \"Option-2\", \"Option-3\"]\n}"
+							"raw": "{\n\t\"description\": \"Question 1\",\n    \"status\": \"New\",\n    \"options\" : [\"Option-1\", \"Option-2\", \"Option-3\"]\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/questions",
@@ -83,21 +68,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "notW34kP@ss",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "dm124",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [
 							{
@@ -181,7 +151,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"description\": \"What is the second day of the week?\",\n    \"status\": \"New\",\n    \"options\" : [\"Seg\", \"Ter\", \"Qua\", \"Qui\", \"Sex\", \"Sab\", \"Dom\"]\n}"
+							"raw": "{\n    \"id\": {{questionId}},\n\t\"description\": \"Question 1\",\n    \"status\": \"New\",\n    \"options\" : [\"Option-1\", \"Option-2\", \"Option-3\"]\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/questions/{{questionId}}",
@@ -213,7 +183,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 3,\n\t\"description\": \"What is the first day of the week?\",\n    \"status\": \"New-2\"\n}"
+							"raw": "{\n    \"id\": {{questionId}},\n\t\"description\": \"Question 1\",\n    \"status\": \"New\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/questions/{{questionId}}",
@@ -363,10 +333,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 3,\n    \"key\": 1,\n    \"name\": \"Days of week answer\",\n    \"answer\": \"Answer to Question 3\",\n    \"questionId\": 2\n}"
+							"raw": "{\n    \"id\": {{answerId}},\n    \"key\": 1,\n    \"name\": \"Days of week answer\",\n    \"answer\": \"Answer to Question 2\",\n    \"questionId\": {{questionId}}\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/answers/3",
+							"raw": "http://localhost:8080/api/answers/{{answerId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -375,7 +345,7 @@
 							"path": [
 								"api",
 								"answers",
-								"3"
+								"{{answerId}}"
 							]
 						}
 					},
@@ -415,14 +385,22 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "Create User",
+					"name": "Create User ADMIN",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
-									"pm.environment.set(\"questionId\", jsonData._id);\r",
+									"pm.collectionVariables.set(\"AdminId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
 									""
 								],
 								"type": "text/javascript"
@@ -431,19 +409,7 @@
 					],
 					"request": {
 						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "notW34kP@ss",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "dm124",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [
@@ -456,7 +422,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"lucasllabanca\",\n    \"password\" : \"123456\",\n    \"role\" : \"teste2\"\n}"
+							"raw": "{\n\t\"name\": \"{{AdminUser}}\",\n    \"password\": \"{{AdminPass}}\",\n    \"role\" : \"ADMIN\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/users/signup",
@@ -473,6 +439,416 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Create User USER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"UserId\", jsonData.id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"{{UserUser}}\",\n    \"password\" : \"{{UserPass}}\",\n    \"role\" : \"USER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Users ADMIN",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{AdminPass}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{AdminUser}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Users USER",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{UserPass}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{UserUser}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve User by Id ADMIN",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{AdminPass}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{AdminUser}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users/{{AdminId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"{{AdminId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve User by Id USER",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{UserPass}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{UserUser}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users/{{UserId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"{{UserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User ADMIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{AdminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{AdminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{AdminId}},\n\t\"name\": \"{{AdminUser}}\",\n    \"password\": \"{{AdminPass}}\",\n    \"role\" : \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users/{{AdminId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"{{AdminId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User USER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{UserPass}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{UserUser}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{UserId}},\n    \"name\": \"{{UserUser}}\",\n    \"password\": \"{{UserPass}}\",\n    \"role\": \"USER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users/{{UserId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"{{UserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User ADMIN",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{AdminPass}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{AdminUser}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/users/{{UserId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"{{UserId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User USER",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{UserUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{UserPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/users/{{UserId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"{{UserId}}"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -482,12 +858,12 @@
 		"basic": [
 			{
 				"key": "password",
-				"value": "notW34kP@ss",
+				"value": "{{AdminPass}}",
 				"type": "string"
 			},
 			{
 				"key": "username",
-				"value": "dm124",
+				"value": "{{AdminUser}}",
 				"type": "string"
 			}
 		]
@@ -520,6 +896,30 @@
 		{
 			"key": "questionId",
 			"value": "1"
+		},
+		{
+			"key": "AdminUser",
+			"value": "lucasllabanca01"
+		},
+		{
+			"key": "AdminPass",
+			"value": "123456"
+		},
+		{
+			"key": "AdminId",
+			"value": ""
+		},
+		{
+			"key": "UserUser",
+			"value": "user01"
+		},
+		{
+			"key": "UserPass",
+			"value": "123"
+		},
+		{
+			"key": "UserId",
+			"value": ""
 		}
 	]
 }

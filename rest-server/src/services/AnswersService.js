@@ -9,7 +9,7 @@ class AnswersService {
       Question.findByPk(newAnswer.questionId)      
         .then(question => {
           if (!question) {
-            reject(`Question with questionId ${newAnswer.questionId} not found`);
+            reject(`Question with id ${newAnswer.questionId} not found`);
           } else {
             resolve(Answer.create({
               key: newAnswer.key,
@@ -51,7 +51,7 @@ class AnswersService {
             Question.findByPk(answer.questionId)      
               .then(question => {
                 if (!question) {
-                  reject(`Question with questionId ${answer.questionId} not found`);
+                  reject(`Question with id ${answer.questionId} not found`);
                 } else {
                   answer.key = updatedAnswer.key || answer.key;
                   answer.name = updatedAnswer.name || answer.name;

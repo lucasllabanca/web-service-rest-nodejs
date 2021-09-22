@@ -6,7 +6,7 @@ const checkAuth = require('../middleware/check-auth');
 const notFound = require('../middleware/not-found');
 const badRequest = require('../middleware/bad-request');
 
-router.post('/', checkAuth, async (request, response) => {
+router.post('/', async (request, response) => {
   try {
     const question = await QuestionsService.add(request.body);
     response.status(201).json(question);
@@ -15,21 +15,21 @@ router.post('/', checkAuth, async (request, response) => {
   } 
 });
 
-router.get('/', checkAuth, async (request, response) => {
+router.get('/', async (request, response) => {
   const questions = await QuestionsService.getAll();
   questions && questions.length
     ? response.json(questions)
     : response.status(204).end();
 });
 
-router.get('/:questionId', checkAuth, async (request, response) => {
+router.get('/:questionId', async (request, response) => {
   const question = await QuestionsService.getById(request.params.questionId);
   question
     ? response.json(question)
     : notFound(request, response);
 });
 
-router.patch('/:questionId', checkAuth, async (request, response) => {
+router.patch('/:questionId', async (request, response) => {
   try {
     const updatedQuestion = await QuestionsService.update(
       request.params.questionId,
@@ -44,7 +44,7 @@ router.patch('/:questionId', checkAuth, async (request, response) => {
   }
 });
 
-router.delete('/:questionId', checkAuth, async (request, response) => {
+router.delete('/:questionId', async (request, response) => {
   const isDeleted = await QuestionsService.delete(request.params.questionId);
   isDeleted
     ? response.end()

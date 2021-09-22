@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const UserRole = require('../models/user-role');
 
 class UsersService {
 
@@ -9,13 +10,18 @@ class UsersService {
         User.findOne({ where: { name: newUser.name } })      
           .then(user => {
             if (user) {
-              reject(`User with name ${user.name} already exists`);
-            } else {             
-              resolve(User.create({
-                name: newUser.name,
-                password: newUser.password,
-                role: newUser.role
-              }));
+              reject(`User with name ${newUser.name} already exists`);
+            } else {     
+              
+              if (Object.values(UserRole).includes(newUser.role)) {
+                resolve(User.create({
+                  name: newUser.name,
+                  password: newUser.password,
+                  role: newUser.role
+                }));
+              } else {
+                reject(`User role ${newUser.role} is invalid. Valid roles: ADMIN | USER`);
+              }                      
             }                   
           }).catch((err) => {
             reject(err)
@@ -25,13 +31,13 @@ class UsersService {
 
   static getAll() {
     return new Promise((resolve) => {
-      resolve(User.findAll());
+      resolve(User.findAll({attributes: { exclude: ['password'] }}));
     });
   }
 
   static getById(id) {
     return new Promise((resolve) => {
-      resolve(User.findByPk(id));
+      resolve(User.findByPk(id, {attributes: { exclude: ['password'] }}));
     });
   }
 
@@ -46,11 +52,38 @@ class UsersService {
           if (!user) {
             resolve(null);
           } else {
-            let encrypted = bcrypt.hash(newUser.password, 12);  
-            user.name = updatedUser.name || user.name;
-            user.password = encrypted || user.password;
-            user.role = updatedUser.role || user.role;           
-            resolve(user.save());
+            
+            if (updatedUser.role && !Object.values(UserRole).includes(updatedUser.role)) {
+              reject(`User role ${updatedUser.role} is invalid. Valid roles: ADMIN | USER`);
+            } else {
+
+              if (updatedUser.name && updatedUser.name != user.name) {
+
+                User.findOne({ where: { name: updatedUser.name } })      
+                .then(user2 => {
+                  if (user2 && user2.id != user.id) {
+                    reject(`User with name ${updatedUser.name} already exists`);
+                  } else {     
+                    user.name = updatedUser.name || user.name;
+                    user.password = updatedUser.password || user.password;
+                    user.role = updatedUser.role || user.role;           
+                    resolve(user.save());                              
+                  }                   
+                }).catch((err) => {
+                  reject(err)
+                });
+
+              } else {
+
+                user.name = updatedUser.name || user.name;
+                user.password = updatedUser.password || user.password;
+                user.role = updatedUser.role || user.role;           
+                resolve(user.save());
+
+              }
+          
+            }
+       
           }                   
         }).catch((err) => {
           reject(err)
