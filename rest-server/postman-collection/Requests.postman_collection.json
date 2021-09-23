@@ -491,21 +491,6 @@
 				{
 					"name": "Retrieve Users ADMIN",
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "{{AdminPass}}",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "{{AdminUser}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -561,21 +546,6 @@
 				{
 					"name": "Retrieve User by Id ADMIN",
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "{{AdminPass}}",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "{{AdminUser}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -653,21 +623,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "{{AdminUser}}",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "{{AdminPass}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "PATCH",
 						"header": [
 							{
@@ -767,21 +722,6 @@
 				{
 					"name": "Delete User ADMIN",
 					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "{{AdminPass}}",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "{{AdminUser}}",
-									"type": "string"
-								}
-							]
-						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -907,7 +847,7 @@
 		},
 		{
 			"key": "AdminId",
-			"value": ""
+			"value": "1"
 		},
 		{
 			"key": "UserUser",
@@ -919,7 +859,7 @@
 		},
 		{
 			"key": "UserId",
-			"value": ""
+			"value": "2"
 		}
 	]
 }
