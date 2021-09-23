@@ -7,6 +7,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const notFound = require('./middleware/not-found');
 const badRequest = require('./middleware/bad-request');
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('../doc/swagger_output.json')
 
 app.use(cors());
 app.use(helmet());
@@ -20,6 +22,7 @@ const usersRouter = require('./routes/users');
 app.use('/api/questions', questionsRouter);
 app.use('/api/answers', answersRouter);
 app.use('/api/users', usersRouter);
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 // Middlewares
 app.use(notFound);

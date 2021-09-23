@@ -8,6 +8,30 @@ const badRequest = require('../middleware/bad-request');
 const UserRole = require('../models/user-role');
 
 router.post('/', checkAuth, async (request, response) => {
+
+  /*
+    #swagger.tags = ['Answers']
+    #swagger.description = 'Endpoint to add an answer'
+    #swagger.path = '/answers'
+    #swagger.method = 'post'
+    #swagger.produces = ['application/json']
+    #swagger.consumes = ['application/json']
+
+    #swagger.parameters['Answer'] = {
+        in: 'body',
+        description: 'Answer',
+        required: true,
+        schema: { $ref: "#/definitions/AddAnswer" }
+    }
+   
+    #swagger.responses[201] = { 
+      schema: { $ref: "#/definitions/AnswerAdded" },
+      description: 'Answer added succesfully' 
+    }
+
+    #swagger.responses[400] = {  description: 'Bad Request' }
+  */
+
   try {
     const answer = await AnswersService.add(request.body);
     response.status(201).json(answer);
@@ -32,6 +56,29 @@ router.get('/', checkAuth, async (request, response) => {
 });
 
 router.get('/:answerId', checkAuth, async (request, response) => {
+  
+  /*
+    #swagger.tags = ['Answers']
+    #swagger.description = 'Endpoint to get an answer by its ID'
+    #swagger.path = '/answers/{answerId}'
+    #swagger.method = 'get'
+    #swagger.produces = ['application/json']
+
+    #swagger.parameters['answerId'] = {
+        in: 'path',
+        description: 'Answer ID',
+        required: true,
+        type: 'integer'
+    }
+
+    #swagger.responses[200] = { 
+      schema: { $ref: "#/definitions/Answer" },
+      description: 'Answer found' 
+    }
+
+    #swagger.responses[400] = {  description: 'Bad Request' }
+    #swagger.responses[404] = {  description: 'Not Found' }
+  */
 
   try {
     const answer = await AnswersService.getById(request.params.answerId);

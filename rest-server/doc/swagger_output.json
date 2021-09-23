@@ -1,0 +1,371 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DM124 REST API",
+    "description": "Trabalho Prático da disciplina DM124 - Lucas Leon Labanca"
+  },
+  "host": "localhost:8080",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "",
+      "description": ""
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {},
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/{questionId}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "patch": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/answers": {
+      "post": {
+        "tags": [
+          "Answers"
+        ],
+        "description": "Endpoint to add an answer",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Answer",
+            "in": "body",
+            "description": "Answer",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddAnswer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Answer added succesfully",
+            "schema": {
+              "$ref": "#/definitions/AnswerAdded"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/answers/{answerId}": {
+      "get": {
+        "tags": [
+          "Answers"
+        ],
+        "description": "Endpoint to get an answer by its ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "answerId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Answer ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Answer"
+            },
+            "description": "Answer found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/{answerId}": {
+      "patch": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "answerId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "answerId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/signup": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/{userId}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "patch": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    }
+  },
+  "definitions": {
+    "Answer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "key": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Days of week answer"
+        },
+        "answer": {
+          "type": "string",
+          "example": "Answer to Question 2"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-09-22T03:42:40.384Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-09-22T03:43:36.138Z"
+        },
+        "questionId": {
+          "type": "number",
+          "example": 1
+        },
+        "question": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 1
+            },
+            "status": {
+              "type": "string",
+              "example": "New"
+            },
+            "description": {
+              "type": "string",
+              "example": "Question 1"
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2021-09-22T03:39:44.484Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2021-09-22T03:39:44.484Z"
+            }
+          }
+        }
+      }
+    },
+    "AnswerAdded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "key": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Days of week answer"
+        },
+        "answer": {
+          "type": "string",
+          "example": "Answer to Question 1"
+        },
+        "questionId": {
+          "type": "number",
+          "example": 1
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-09-23T03:33:23.630Z"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-09-23T03:33:23.630Z"
+        }
+      }
+    },
+    "AddAnswer": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Days of week answer"
+        },
+        "answer": {
+          "type": "string",
+          "example": "Answer to Question 1"
+        },
+        "questionId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    }
+  }
+}
