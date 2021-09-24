@@ -13,13 +13,15 @@ npm install
 npm start
 ```
 
-## [REST API documentation](rest-server/doc/swagger_output.md)
+## REST API documentation
 
 Create the Swagger (json) and Markdown (md) documentations
 
 ```sh
 npm run doc
 ```
+
+[Documentation Markdown (md)](rest-server/doc/swagger_output.md)
 
 ## Database
 
@@ -44,10 +46,10 @@ All endpoints are protected with Basic Auth, except api/users/signup.
 Use the signup endpoint to register a user with role ADMIN for full access to all endpoints or with role USER for limited access
 
 ```sh
-curl -X 'POST' \
-  'http://localhost:8080/api/users/signup' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
+curl -X 'POST'
+  'http://localhost:8080/api/users/signup'
+  -H 'accept: application/json'
+  -H 'Content-Type: application/json'
   -d '{
   "name": "admin01",
   "password": "123456",
@@ -61,8 +63,6 @@ With the server running, you can try it out using Swagger with your prefered bro
 http://localhost:8080/api
 ```
 
-or you can use Postman with the following collection
-
-[Postman Collection](rest-server/postman-collection/Requests.postman_collection.json)
+or you can use Postman with this [collection](rest-server/postman-collection/Requests.postman_collection.json).
 
 2021 - Lucas Labanca
