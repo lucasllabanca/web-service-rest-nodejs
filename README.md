@@ -15,13 +15,11 @@ npm start
 
 ## REST API documentation
 
-Create the Swagger (json) and Markdown (md) documentations
+Create/Update the Swagger (json) and [Markdown (md)](rest-server/doc/swagger_output.md) documentations inside ./rest-server/doc
 
 ```sh
 npm run doc
 ```
-
-[Documentation Markdown (md)](rest-server/doc/swagger_output.md)
 
 ## Database
 
