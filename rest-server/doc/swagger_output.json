@@ -16,7 +16,14 @@
   "schemes": [
     "http"
   ],
-  "securityDefinitions": {},
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Basic Auth Base 64"
+    }
+  },
   "consumes": [
     "application/json"
   ],
@@ -24,57 +31,193 @@
     "application/json"
   ],
   "paths": {
-    "/": {
+    "/questions": {
+      "post": {
+        "tags": [
+          "Questions"
+        ],
+        "description": "Add a question",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Question",
+            "in": "body",
+            "description": "Question",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QuestionToAdd"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Question added succesfully",
+            "schema": {
+              "$ref": "#/definitions/QuestionAdded"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
       "get": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Questions"
+        ],
+        "description": "Get a list of all of the questions",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [],
         "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/QuestionList"
+            },
+            "description": "Question list found"
+          },
           "204": {
             "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           }
-        }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       }
     },
-    "/{questionId}": {
+    "/questions/{questionId}": {
       "get": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Questions"
+        ],
+        "description": "Get a question by ID",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "questionId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "Question ID"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Question"
+            },
+            "description": "Question found"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       },
       "patch": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Questions"
+        ],
+        "description": "Update a question",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "questionId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "Question ID"
+          },
+          {
+            "name": "Question",
+            "in": "body",
+            "description": "Question",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QuestionToAdd"
+            }
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/QuestionAdded"
+            },
+            "description": "Question updated succesfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       },
       "delete": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Questions"
+        ],
+        "description": "Delete a question by ID",
         "parameters": [
           {
             "name": "questionId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "Question ID"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "Question deleted"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       }
     },
     "/answers": {
@@ -82,7 +225,7 @@
         "tags": [
           "Answers"
         ],
-        "description": "Endpoint to add an answer",
+        "description": "Add an answer",
         "consumes": [
           "application/json"
         ],
@@ -96,7 +239,7 @@
             "description": "Answer",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AddAnswer"
+              "$ref": "#/definitions/AnswerToAdd"
             }
           }
         ],
@@ -110,7 +253,41 @@
           "400": {
             "description": "Bad Request"
           }
-        }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Answers"
+        ],
+        "description": "Get a list of all of the answers",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AnswerList"
+            },
+            "description": "Answer list found"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       }
     },
     "/answers/{answerId}": {
@@ -118,7 +295,7 @@
         "tags": [
           "Answers"
         ],
-        "description": "Endpoint to get an answer by its ID",
+        "description": "Get an answer by ID",
         "produces": [
           "application/json"
         ],
@@ -144,117 +321,490 @@
           "404": {
             "description": "Not Found"
           }
-        }
-      }
-    },
-    "/{answerId}": {
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
       "patch": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Answers"
+        ],
+        "description": "Update an answer",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "answerId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "Answer ID"
+          },
+          {
+            "name": "Answer",
+            "in": "body",
+            "description": "Answer",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AnswerToAdd"
+            }
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AnswerAdded"
+            },
+            "description": "Answer updated succesfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       },
       "delete": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Answers"
+        ],
+        "description": "Delete an answer by ID",
         "parameters": [
           {
             "name": "answerId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "Answer ID"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "Answer deleted"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       }
     },
-    "/signup": {
+    "/users/signup": {
       "post": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Add a user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "name": "obj",
+            "name": "User",
             "in": "body",
+            "description": "User",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/UserToAdd"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "User added succesfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
     },
-    "/{userId}": {
+    "/users": {
       "get": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Get a list of all of the users",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/UserList"
+            },
+            "description": "User list found"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request: error or not allowed to users with role: USER"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Get a user by ID",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "User ID"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "User found"
+          },
+          "400": {
+            "description": "Bad Request: error or user with role USER is not authorized to get someone elses user"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       },
       "patch": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Update a user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "User ID"
           },
           {
-            "name": "obj",
+            "name": "User",
             "in": "body",
+            "description": "User",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/UserToAdd"
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "User updated succesfully"
+          },
+          "400": {
+            "description": "Bad Request: error or user with role USER is not authorized to update someone elses user"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       },
       "delete": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Delete a user by ID",
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "User ID"
           }
         ],
-        "responses": {}
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "400": {
+            "description": "Bad Request: error or user with role USER is not authorized to delete someone elses user"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
       }
     }
   },
   "definitions": {
+    "Question": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "status": {
+          "type": "string",
+          "example": "New"
+        },
+        "description": {
+          "type": "string",
+          "example": "Question 1"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-09-24T00:52:02.775Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-09-24T00:52:02.775Z"
+        },
+        "answer": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 1
+            },
+            "key": {
+              "type": "number",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "Days of week answer"
+            },
+            "answer": {
+              "type": "string",
+              "example": "Answer to Question 1"
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2021-09-24T00:53:58.517Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2021-09-24T00:53:58.517Z"
+            },
+            "questionId": {
+              "type": "number",
+              "example": 1
+            }
+          }
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 3
+              },
+              "option": {
+                "type": "string",
+                "example": "Option-3"
+              },
+              "questionId": {
+                "type": "number",
+                "example": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "QuestionList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "status": {
+            "type": "string",
+            "example": "New"
+          },
+          "description": {
+            "type": "string",
+            "example": "Question 1"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2021-09-24T00:52:02.775Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2021-09-24T00:52:02.775Z"
+          },
+          "answer": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "key": {
+                "type": "number",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "Days of week answer"
+              },
+              "answer": {
+                "type": "string",
+                "example": "Answer to Question 1"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2021-09-24T00:53:58.517Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2021-09-24T00:53:58.517Z"
+              },
+              "questionId": {
+                "type": "number",
+                "example": 1
+              }
+            }
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 3
+                },
+                "option": {
+                  "type": "string",
+                  "example": "Option-3"
+                },
+                "questionId": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "QuestionToAdd": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "Question 1"
+        },
+        "status": {
+          "type": "string",
+          "example": "New"
+        },
+        "options": {
+          "type": "array",
+          "example": [
+            "Option-1",
+            "Option-2",
+            "Option-3"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "QuestionAdded": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "status": {
+          "type": "string",
+          "example": "New"
+        },
+        "description": {
+          "type": "string",
+          "example": "Question 1"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-09-24T00:52:02.775Z"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-09-24T00:52:02.775Z"
+        }
+      }
+    },
     "Answer": {
       "type": "object",
       "properties": {
@@ -313,6 +863,88 @@
         }
       }
     },
+    "AnswerList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "key": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Days of week answer"
+          },
+          "answer": {
+            "type": "string",
+            "example": "Answer to Question 2"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2021-09-22T03:42:40.384Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2021-09-22T03:43:36.138Z"
+          },
+          "questionId": {
+            "type": "number",
+            "example": 1
+          },
+          "question": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "status": {
+                "type": "string",
+                "example": "New"
+              },
+              "description": {
+                "type": "string",
+                "example": "Question 1"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2021-09-22T03:39:44.484Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2021-09-22T03:39:44.484Z"
+              }
+            }
+          }
+        }
+      }
+    },
+    "AnswerToAdd": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Days of week answer"
+        },
+        "answer": {
+          "type": "string",
+          "example": "Answer to Question 1"
+        },
+        "questionId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
     "AnswerAdded": {
       "type": "object",
       "properties": {
@@ -346,24 +978,73 @@
         }
       }
     },
-    "AddAnswer": {
+    "User": {
       "type": "object",
       "properties": {
-        "key": {
+        "id": {
           "type": "number",
           "example": 1
         },
         "name": {
           "type": "string",
-          "example": "Days of week answer"
+          "example": "admin01"
         },
-        "answer": {
+        "role": {
           "type": "string",
-          "example": "Answer to Question 1"
+          "example": "ADMIN"
         },
-        "questionId": {
-          "type": "number",
-          "example": 1
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-09-24T00:45:54.199Z"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-09-24T00:45:54.199Z"
+        }
+      }
+    },
+    "UserList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 2
+          },
+          "name": {
+            "type": "string",
+            "example": "user01"
+          },
+          "role": {
+            "type": "string",
+            "example": "USER"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2021-09-24T00:48:14.123Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2021-09-24T00:48:14.123Z"
+          }
+        }
+      }
+    },
+    "UserToAdd": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "admin01"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        },
+        "role": {
+          "type": "string",
+          "example": "ADMIN"
         }
       }
     }

@@ -13,7 +13,7 @@ Question.hasMany(Option)
 Answer.belongsTo(Question, {constraints: true, onDelete: 'CASCADE'});
 Question.hasOne(Answer);
 sequelize
-  .sync()//{force : true}) //DROP TABLE + Creates IF NOT EXISTS
+  .sync({force : true}) //DROP TABLE + Creates IF NOT EXISTS
   .then(
     http.createServer(app)
       .listen(port, () => {

@@ -10,8 +10,12 @@ const UserRole = require('../models/user-role');
 router.post('/', checkAuth, async (request, response) => {
 
   /*
+    #swagger.security = [{
+      "basicAuth": []
+    }]
+
     #swagger.tags = ['Answers']
-    #swagger.description = 'Endpoint to add an answer'
+    #swagger.description = 'Add an answer'
     #swagger.path = '/answers'
     #swagger.method = 'post'
     #swagger.produces = ['application/json']
@@ -21,7 +25,7 @@ router.post('/', checkAuth, async (request, response) => {
         in: 'body',
         description: 'Answer',
         required: true,
-        schema: { $ref: "#/definitions/AddAnswer" }
+        schema: { $ref: "#/definitions/AnswerToAdd" }
     }
    
     #swagger.responses[201] = { 
@@ -42,6 +46,26 @@ router.post('/', checkAuth, async (request, response) => {
 
 router.get('/', checkAuth, async (request, response) => {
 
+  /*
+    #swagger.security = [{
+      "basicAuth": []
+    }]
+
+    #swagger.tags = ['Answers']
+    #swagger.description = 'Get a list of all of the answers'
+    #swagger.path = '/answers'
+    #swagger.method = 'get'
+    #swagger.produces = ['application/json']
+
+    #swagger.responses[200] = { 
+      schema: { $ref: "#/definitions/AnswerList" },
+      description: 'Answer list found' 
+    }
+
+    #swagger.responses[204] = {  description: 'No Content' }
+    #swagger.responses[400] = {  description: 'Bad Request' }
+  */
+
   try {
     if (UserRole.Admin == request.headers.role) {
       const answers = await AnswersService.getAll();
@@ -58,8 +82,12 @@ router.get('/', checkAuth, async (request, response) => {
 router.get('/:answerId', checkAuth, async (request, response) => {
   
   /*
+    #swagger.security = [{
+      "basicAuth": []
+    }]
+
     #swagger.tags = ['Answers']
-    #swagger.description = 'Endpoint to get an answer by its ID'
+    #swagger.description = 'Get an answer by ID'
     #swagger.path = '/answers/{answerId}'
     #swagger.method = 'get'
     #swagger.produces = ['application/json']
@@ -90,6 +118,42 @@ router.get('/:answerId', checkAuth, async (request, response) => {
 });
 
 router.patch('/:answerId', checkAuth, async (request, response) => {
+
+  /*
+    #swagger.security = [{
+      "basicAuth": []
+    }]
+
+    #swagger.tags = ['Answers']
+    #swagger.description = 'Update an answer'
+    #swagger.path = '/answers/{answerId}'
+    #swagger.method = 'patch'
+    #swagger.produces = ['application/json']
+    #swagger.consumes = ['application/json']
+
+    #swagger.parameters['answerId'] = {
+        in: 'path',
+        description: 'Answer ID',
+        required: true,
+        type: 'integer'
+    }
+
+    #swagger.parameters['Answer'] = {
+        in: 'body',
+        description: 'Answer',
+        required: true,
+        schema: { $ref: "#/definitions/AnswerToAdd" }
+    }
+   
+    #swagger.responses[200] = { 
+      schema: { $ref: "#/definitions/AnswerAdded" },
+      description: 'Answer updated succesfully' 
+    }
+
+    #swagger.responses[400] = {  description: 'Bad Request' }
+    #swagger.responses[404] = {  description: 'Not Found' }
+  */
+
   try {
     const updatedAnswer = await AnswersService.update(
       request.params.answerId,
@@ -105,6 +169,28 @@ router.patch('/:answerId', checkAuth, async (request, response) => {
 });
 
 router.delete('/:answerId', checkAuth, async (request, response) => {
+
+  /*
+    #swagger.security = [{
+      "basicAuth": []
+    }]
+    
+    #swagger.tags = ['Answers']
+    #swagger.description = 'Delete an answer by ID'
+    #swagger.path = '/answers/{answerId}'
+    #swagger.method = 'delete'
+
+    #swagger.parameters['answerId'] = {
+        in: 'path',
+        description: 'Answer ID',
+        required: true,
+        type: 'integer'
+    }
+
+    #swagger.responses[200] = {  description: 'Answer deleted' }
+    #swagger.responses[400] = {  description: 'Bad Request' }
+    #swagger.responses[404] = {  description: 'Not Found' }
+  */
 
   try {
     if (UserRole.Admin == request.headers.role) {

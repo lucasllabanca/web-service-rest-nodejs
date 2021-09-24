@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node ./src/server",
     "dev": "nodemon ./src/server",
-    "swagger-autogen": "node ./doc/swagger"
+    "doc": "node ./doc/swagger && swagger-markdown -i ./doc/swagger_output.json -o ./doc/swagger_output.md"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",

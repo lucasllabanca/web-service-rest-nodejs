@@ -22,7 +22,7 @@ const usersRouter = require('./routes/users');
 app.use('/api/questions', questionsRouter);
 app.use('/api/answers', answersRouter);
 app.use('/api/users', usersRouter);
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 // Middlewares
 app.use(notFound);
