@@ -1,8 +1,8 @@
-## DM124 Project - Private Repo
+## DM124 Project
 
 This project aims to provide a REST API Server for maintaining Questions, Answers and Users.
 
-It makes use of the ORM Sequelize with Microsoft SQL Server database, together with Express.js and many other dependencies.
+It makes use of the Sequelize ORM with Microsoft SQL Server database, together with Express.js and many other dependencies.
 
 ## Installation
 
@@ -15,7 +15,7 @@ npm start
 
 ## [REST API documentation](rest-server/doc/swagger_output.md)
 
-Create the Swagger Web views and Markdown (md) documentation
+Create the Swagger (json) and Markdown (md) documentations
 
 ```sh
 npm run doc
@@ -23,7 +23,7 @@ npm run doc
 
 ## Database
 
-To use this project with the designed database Microsoft SQL Server, have a look in the SQL scripts added to this source repo
+To use this project with the designed database Microsoft SQL Server, have a look at the following SQL scripts
 
 [Create DB](rest-server/sqlserver-scripts/create-database.sql)
 
@@ -39,13 +39,29 @@ Database configs
 
 ## Try it out
 
+All endpoints are protected with Basic Auth, except api/users/signup.
+
+Use the signup endpoint to register a user with role ADMIN for full access to all endpoints or with role USER for limited access
+
+```sh
+curl -X 'POST' \
+  'http://localhost:8080/api/users/signup' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "admin01",
+  "password": "123456",
+  "role": "ADMIN"
+}'
+```
+
 With the server running, you can try it out using Swagger with your prefered browser, navigating to
 
 ```sh
 http://localhost:8080/api
 ```
 
-or you can use Postman using the following json collection
+or you can use Postman with the following collection
 
 [Postman Collection](rest-server/postman-collection/Requests.postman_collection.json)
 
