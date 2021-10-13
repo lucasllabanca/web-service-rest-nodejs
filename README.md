@@ -1,4 +1,4 @@
-## DM124 Project
+## Web Service REST with NodeJS
 
 This project aims to provide a REST API Server for maintaining Questions, Answers and Users.
 
